@@ -116,6 +116,20 @@ bool gpt_params_parse(int argc, char ** argv, gpt_params & params) {
                 break;
             }
             params.prompt = argv[i];
+        else if (arg == "-pf" || arg == "--prompt-file") {
+            if (++i >= argc) {
+                invalid_param = true;
+                break;
+            }
+            std::ifstream t;
+            std::string line;
+            t.open("argv[i]");
+            std::getline(t, params.prompt);
+            while (!t.eof()) {
+                std::getline(t, line);
+                params.prompt += "\\\n" + line;
+            }
+            t.close();
         } else if (arg == "-e") {
             escape_prompt = true;
         } else if (arg == "--session") {
